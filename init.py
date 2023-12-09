@@ -59,19 +59,19 @@ for y in years:
             os.mkdir(year_pos + "/" + str(d))
         day_pos = year_pos + "/" + str(d)
         if MAKE_CODE_TEMPLATE and not os.path.exists(day_pos + "/advent_code.py"):
-            code = open(day_pos + "/advent_code.py", "w+")
-            code.write(
-                "# Advent of code Year "
-                + str(y)
-                + " Day "
-                + str(d)
-                + " solution\n# Author = "
-                + author
-                + "\n# Date = "
-                + date
-                + '\n\nwith open((__file__.rstrip("advent_code.py")+"input.txt"), \'r\') as input_file:\n    input = input_file.read()\n\n\n\nprint("Part One : "+ str(None))\n\n\n\nprint("Part Two : "+ str(None))'
-            )
-            code.close()
+            with open(day_pos + "/advent_code.py", "w+", encoding="utf-8") as code:
+                code_content = (
+                    f"# Advent of code Year {y} Day {d} solution\n"
+                    f"# Author = {author}\n"
+                    f"# Date = {date}\n\n"
+                    "import os\n\n"
+                    "file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input.txt')\n"
+                    "with open(file_path, 'r', encoding='utf-8') as input_file:\n"
+                    "    input = input_file.read()\n\n\n"
+                    "print('Part One :', str(None))\n\n"
+                    "print('Part Two :', str(None))"
+                )
+                code.write(code_content)
         if (
             DOWNLOAD_INPUTS
             and (not os.path.exists(day_pos + "/input.txt") or OVERWRITE)
