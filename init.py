@@ -20,7 +20,7 @@ starting_advent_of_code_year = 2023  # You can go as early as 2015.
 last_advent_of_code_year = (
     2023  # The setup will download all advent of code data up until that date included
 )
-last_advent_of_code_day = 8  # If the year isn't finished, the setup will download days up until that day included for the last year
+last_advent_of_code_day = 25  # If the year isn't finished, the setup will download days up until that day included for the last year
 # Imports
 import os
 import datetime
