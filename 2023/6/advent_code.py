@@ -2,16 +2,16 @@
 # Author = Mouly Taha
 # Date = December 2018
 
-from functools import reduce
-import os
 import math
+import os
+from functools import reduce
 
 # Obtener la ruta al directorio actual
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Construir la ruta al archivo input.txt en el mismo directorio
 file_path = os.path.join(dir_path, "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 EXAMPLE_INPUT = """Time:      7  15   30
@@ -40,7 +40,7 @@ records = parse_input_1(input_data)
 def get_races_1(records):
     how_many_ways = []
     for index, (time, distance) in enumerate(
-        zip(records["times"], records["distances"])
+        zip(records["times"], records["distances"], strict=False)
     ):
         how_many_ways.append(0)
         for time_charging in range(1, time):
@@ -50,7 +50,7 @@ def get_races_1(records):
     return how_many_ways
 
 
-def get_races_2(race_record: (int, int)):
+def get_races_2(race_record: tuple[int, int]):
     time, distance = race_record
     first_root = math.ceil((-time + math.sqrt(time**2 - 4 * distance)) / (-2))
     second_root = math.floor((-time - math.sqrt(time**2 - 4 * distance)) / (-2))

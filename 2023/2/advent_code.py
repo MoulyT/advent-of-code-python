@@ -2,9 +2,8 @@
 # Author = Mouly Taha
 # Date = December 2018
 
-from typing import List, Dict, Union, Literal
-
 import os
+from typing import Literal
 
 # Obtener la ruta al directorio actual
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -12,7 +11,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 # Construir la ruta al archivo input.txt en el mismo directorio
 file_path = os.path.join(dir_path, "input.txt")
 
-with open(file_path, "r", encoding="utf-8") as input_file:
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 EXAMPLE_INPUT = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -22,48 +21,45 @@ Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"""
 
 Color = Literal["blue", "green", "red"]
-SetColorCounts = Dict[Color, int]
-GameDataType = Dict[str, Union[int, SetColorCounts]]
+SetColorCounts = dict[Color, int]
+GameDataType = dict[str, int | SetColorCounts]
 
 
-def how_many_colors(array_cubes: List[str]) -> SetColorCounts:
+def how_many_colors(array_cubes: list[str]) -> SetColorCounts:
     """
-    Counts the number of occurrences of specified colors in a list of strings.
+    Counts color occurrences in a list of cube strings.
 
-     Each string in the input list represents a cube, formatted as ' color number'.
-     The function counts the number of each color ('blue', 'green', 'red') present in the list.
+    Each string represents a cube in format ' color number'.
 
-     Args:
-         array_cubes (List[str]): A list of strings, each representing a cube in the format ' color number'.
+    Args:
+        array_cubes: List of cube strings in format ' color number'.
 
-     Returns:
-         dict[str, int]: A dictionary with color keys ('blue', 'green', 'red') and their respective counts as values.
+    Returns:
+        Dictionary with color counts for 'blue', 'green', 'red'.
     """
-    result = {
+    result: SetColorCounts = {
         "blue": 0,
         "green": 0,
         "red": 0,
     }
     for cube in array_cubes:
         count, color = cube.strip().split()
-        if color in result:
-            result[color] += int(count)
+        if color in ("blue", "green", "red"):
+            result[color] += int(count)  # type: ignore
     return result
 
 
-def parse_game_data(string: str) -> List[GameDataType]:
+def parse_game_data(string: str) -> list[GameDataType]:
     """
-    Parses game data from a string and returns a list of game details.
+    Parses game data from a multiline string.
 
-    Each game is described in a single line, with sets of colors and their counts separated by semicolons.
-    The function extracts each game and its sets, then counts the occurrences of each color in the sets.
+    Each line describes a game with semicolon-separated color sets.
 
     Args:
-        string (str): A multiline string where each line represents a game with sets of colored cubes.
+        string: Multiline string with game data.
 
     Returns:
-        List[Dict]: A list of dictionaries, each representing a game. Each game dictionary contains
-                    an 'id' key with the game number and keys for each set with the count of colors.
+        List of game dictionaries with 'id' and color set counts.
     """
     games_raw = string.split("\n")
     games_to_be_parsed = []
@@ -74,8 +70,8 @@ def parse_game_data(string: str) -> List[GameDataType]:
         for set_number, game_set in enumerate(game_sets):
             games_to_be_parsed[game_number][f"set {set_number + 1}"] = {}
             cubes = game_set.split(",")
-            games_to_be_parsed[game_number][f"set {set_number + 1}"] = how_many_colors(
-                cubes
+            games_to_be_parsed[game_number][f"set {set_number + 1}"] = (
+                how_many_colors(cubes)
             )
     return games_to_be_parsed
 
@@ -83,35 +79,37 @@ def parse_game_data(string: str) -> List[GameDataType]:
 games = parse_game_data(input_data)
 
 
-def check_color_cubes(game_set: SetColorCounts, color: Color, max_count: int) -> bool:
+def check_color_cubes(
+    game_set: SetColorCounts, color: Color, max_count: int
+) -> bool:
     """
-    Checks if the number of cubes of a specific color in a game set
-    is less than the required amount.
+    Checks if a color count exceeds the maximum.
 
     Args:
-        game_set (SetColorCounts): A dictionary with color counts.
-        color (Color): The color to check.
-        required_count (int): The required number of cubes for the color.
+        game_set: Dictionary with color counts.
+        color: Color to check.
+        max_count: Maximum allowed count.
 
     Returns:
-        bool: True if the game set has fewer cubes of the specified color than required.
+        True if count exceeds max_count.
     """
     return game_set.get(color, 0) > max_count
 
 
 def is_game_possible(game_input: GameDataType) -> bool:
     """
-    Determines if a game meets the required number of colored cubes.
+    Checks if game is possible with available cubes.
 
     Args:
-        game (GameDataType): A game data structure containing sets of colored cubes.
+        game_input: Game data with color sets.
 
     Returns:
-        bool: True if all sets in the game meet the color requirements.
+        True if all sets meet cube requirements.
     """
     max_cubes: SetColorCounts = {"blue": 14, "green": 13, "red": 12}
     for key, game_set in game_input.items():
         if "set" in key:
+            assert isinstance(game_set, dict)  # type narrowing
             for color, max_count in max_cubes.items():
                 if check_color_cubes(game_set, color, max_count):
                     return False
@@ -132,19 +130,21 @@ sum_ids = calculate_sum_ids(games)
 print("Part One : " + str(sum_ids))
 
 
-def calculate_power(games: List[GameDataType]):
+def calculate_power(games: list[GameDataType]):
     result = 0
     for game in games:
-        all_red_events = [
-            game_set["red"] for key, game_set in game.items() if "set" in key
-        ]
-        all_green_events = [
-            game_set["green"] for key, game_set in game.items() if "set" in key
-        ]
-        all_blue_events = [
-            game_set["blue"] for key, game_set in game.items() if "set" in key
-        ]
-        power = max(all_red_events) * max(all_green_events) * max(all_blue_events)
+        all_red_events = []
+        all_green_events = []
+        all_blue_events = []
+        for key, game_set in game.items():
+            if "set" in key:
+                assert isinstance(game_set, dict)  # type narrowing
+                all_red_events.append(game_set["red"])
+                all_green_events.append(game_set["green"])
+                all_blue_events.append(game_set["blue"])
+        power = (
+            max(all_red_events) * max(all_green_events) * max(all_blue_events)
+        )
         result += power
     return result
 

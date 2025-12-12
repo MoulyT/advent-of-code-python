@@ -1,9 +1,9 @@
-from advent_code import (
+from .advent_code import (
     EXAMPLE_INPUT,
+    how_many_possible_springs,
+    is_possible_springs,
     parse_input,
     unfold_springs,
-    is_possible_springs,
-    how_many_possible_springs,
 )
 
 

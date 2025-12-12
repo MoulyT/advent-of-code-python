@@ -1,11 +1,10 @@
 # Advent of code Year 2023 Day 1 solution
 # Author = Mouly Taha
 # Date = December 2023
-from typing import Optional
+from pathlib import Path
 
-with open(
-    (__file__.rstrip("advent_code.py") + "input.txt"), "r", encoding="utf-8"
-) as input_file:
+input_file_path = Path(__file__).parent / "input.txt"
+with open(input_file_path, encoding="utf-8") as input_file:
     input = input_file.read()
 
 EXAMPLE_INPUT = """two1nine
@@ -18,7 +17,7 @@ zoneight234
 
 words = input.split("\n")
 
-type search_result = Optional[dict[str, str]]
+type search_result = dict[str, int] | None
 
 
 def search_first_integer(input_word: str) -> search_result:
@@ -37,7 +36,10 @@ def search_last_integer(input_word: str) -> search_result:
     """
     for index, character in enumerate(reversed(input_word)):
         if character.isdigit():
-            return {"number": int(character), "index": len(input_word) - index - 1}
+            return {
+                "number": int(character),
+                "index": len(input_word) - index - 1,
+            }
     return None
 
 
@@ -57,24 +59,14 @@ numbers = {
 
 def search_first_str_number(input_word: str) -> search_result:
     """
-    Searches for the first occurrence of a number (in word form) within a given string and
-    returns the corresponding search result.
-
-    This function iterates through a predefined dictionary `numbers`, where each value represents
-    a number in word form.
-    It checks for the presence of these number words in the input string and returns
-      the first one it finds.
+    Search for the first occurrence of a number word (e.g., "one", "two").
 
     Args:
-        input_word (str): The string to be searched for number words.
+        input_word: String to search for number words.
 
     Returns:
-        search_result: A dictionary containing the numeric value and index of the first found number
-                        word in the string.
-                       The 'number' key holds the numeric value (as an integer) corresponding
-                        to the found number word,and the 'index' key holds the starting index
-                        of this number word in the string.
-                       Returns None if no number word is found.
+        Dict with 'number' (int) and 'index' (int) keys,
+        or None if not found.
     """
     result = None
     for iteration, number in enumerate(numbers.values()):
@@ -90,19 +82,14 @@ def search_first_str_number(input_word: str) -> search_result:
 
 def search_last_str_number(input_word: str) -> search_result:
     """
-    Searches for the last occurrence of any number (in word form) in a string and returns a search result.
-
-    Similar to `search_first_str_number`, this function iterates over the `numbers` dictionary to find numbers in word form.
-    However, it looks for the last occurrence of these numbers in `input_word`.
+    Search for the last occurrence of a number word (e.g., "one", "two").
 
     Args:
-        input_word (str): The string in which to search for the number.
+        input_word: String to search for number words.
 
     Returns:
-        search_result: A dictionary containing the number found and its index in the string.
-                       The 'number' key holds the numeric value (as an integer) of the found number,
-                       and the 'index' key holds the starting index of the number in the string.
-                       Returns None if no number is found.
+        Dict with 'number' (int) and 'index' (int) keys,
+        or None if not found.
     """
     result = None
     for iteration, number in enumerate(numbers.values()):
@@ -120,15 +107,15 @@ def compare_search_results(
     integer: search_result, str_number: search_result, use_first: bool
 ) -> search_result:
     """
-    Compare two search results and returns the first or last one based on the `use_first` flag.
+    Compare two search results and return first or last based on flag.
 
     Args:
-        integer (search_result): The search result containing an integer.
-        str_number (search_result): The search result containing a string representation of a number.
-        use_first (bool): Flag to determine if the first or last result should be returned.
+        integer: Search result from integer search.
+        str_number: Search result from number word search.
+        use_first: If True, return earliest; if False, return latest.
 
     Returns:
-        search_result: The desired search result based on the comparison.
+        The selected search result.
     """
     if integer is None:
         return str_number
@@ -168,9 +155,9 @@ for word in words:
         search_last_integer(word), search_last_str_number(word)
     )
     if first_integer is not None and last_integer is not None:
-        concat_of_numbers = first_integer.get(
-            "number", "error"
-        ) * 10 + last_integer.get("number", "error")
+        concat_of_numbers = (
+            first_integer["number"] * 10 + last_integer["number"]
+        )
         RESULT = RESULT + concat_of_numbers
     else:
         raise ValueError("first_integer or/and last_integer are NoneType")

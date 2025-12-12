@@ -1,12 +1,11 @@
-from advent_code import (
-    search_first_integer,
-    search_last_integer,
-    search_first_str_number,
-    search_last_str_number,
+from .advent_code import (
     get_first_integer,
     get_last_integer,
+    search_first_integer,
+    search_first_str_number,
+    search_last_integer,
+    search_last_str_number,
 )
-
 
 EXAMPLE_INPUT = """1two1nine
 eightwothree
@@ -27,7 +26,7 @@ input_line7 = input_lines[6]
 
 def test_search_first_integer():
     assert search_first_integer(input_line1) == {"number": 1, "index": 0}
-    assert search_first_integer(input_line2) == None
+    assert search_first_integer(input_line2) is None
     assert search_first_integer(input_line3) == {"number": 2, "index": 6}
     assert search_first_integer(input_line4) == {"number": 3, "index": 6}
     assert search_first_integer(input_line5) == {"number": 4, "index": 0}
@@ -37,7 +36,7 @@ def test_search_first_integer():
 
 def test_search_last_integer():
     assert search_last_integer(input_line1) == {"number": 1, "index": 4}
-    assert search_last_integer(input_line2) == None
+    assert search_last_integer(input_line2) is None
     assert search_last_integer(input_line3) == {"number": 2, "index": 6}
     assert search_last_integer(input_line4) == {"number": 3, "index": 6}
     assert search_last_integer(input_line5) == {"number": 2, "index": 15}
@@ -48,89 +47,89 @@ def test_search_last_integer():
 def test_search_first_str_number():
     result = search_first_str_number(input_line1)
     expected = {"number": 2, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line2)
     expected = {"number": 8, "index": 0}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line3)
     expected = {"number": 1, "index": 3}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line4)
     expected = {"number": 2, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line5)
     expected = {"number": 9, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line6)
     expected = {"number": 1, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    )
 
     result = search_first_str_number(input_line7)
     expected = {"number": 6, "index": 6}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    )
 
 
 def test_search_last_str_number():
     result = search_last_str_number(input_line1)
     expected = {"number": 9, "index": 5}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line2)
     expected = {"number": 3, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line3)
     expected = {"number": 3, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line4)
     expected = {"number": 4, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line5)
     expected = {"number": 7, "index": 10}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line6)
     expected = {"number": 8, "index": 3}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    )
 
     result = search_last_str_number(input_line7)
     expected = {"number": 6, "index": 6}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    )
 
 
 def test_get_first_integer():
@@ -138,57 +137,57 @@ def test_get_first_integer():
         search_first_integer(input_line1), search_first_str_number(input_line1)
     )
     expected = {"number": 1, "index": 0}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line2), search_first_str_number(input_line2)
     )
     expected = {"number": 8, "index": 0}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line3), search_first_str_number(input_line3)
     )
     expected = {"number": 1, "index": 3}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line4), search_first_str_number(input_line4)
     )
     expected = {"number": 2, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line5), search_first_str_number(input_line5)
     )
     expected = {"number": 4, "index": 0}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line6), search_first_str_number(input_line6)
     )
     expected = {"number": 1, "index": 1}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    )
 
     result = get_first_integer(
         search_first_integer(input_line7), search_first_str_number(input_line7)
     )
     expected = {"number": 7, "index": 0}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    )
 
 
 def test_get_last_integer():
@@ -196,54 +195,54 @@ def test_get_last_integer():
         search_last_integer(input_line1), search_last_str_number(input_line1)
     )
     expected = {"number": 9, "index": 5}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line1}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line2), search_last_str_number(input_line2)
     )
     expected = {"number": 3, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line2}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line3), search_last_str_number(input_line3)
     )
     expected = {"number": 3, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line3}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line4), search_last_str_number(input_line4)
     )
     expected = {"number": 4, "index": 7}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line4}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line5), search_last_str_number(input_line5)
     )
     expected = {"number": 2, "index": 15}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line5}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line6), search_last_str_number(input_line6)
     )
     expected = {"number": 4, "index": 10}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line6}'. Expected {expected}, but got {result}"
+    )
 
     result = get_last_integer(
         search_last_integer(input_line7), search_last_str_number(input_line7)
     )
     expected = {"number": 6, "index": 6}
-    assert (
-        result == expected
-    ), f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    assert result == expected, (
+        f"Failed for input '{input_line7}'. Expected {expected}, but got {result}"
+    )

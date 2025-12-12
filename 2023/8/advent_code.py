@@ -2,8 +2,8 @@
 # Author = Mouly Taha
 # Date = December 2018
 
-import os
 import math
+import os
 from functools import reduce
 
 # Obtener la ruta al directorio actual
@@ -11,7 +11,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Construir la ruta al archivo input.txt en el mismo directorio
 file_path = os.path.join(dir_path, "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 EXAMPLE_INPUT = """LR
@@ -36,7 +36,9 @@ def parse_input_1(input_string: str):
 
 
 def search_exit(directions, network):
-    current_positions = [position for position in network if position.endswith("A")]
+    current_positions = [
+        position for position in network if position.endswith("A")
+    ]
     steps = []
     max_steps = 1000000
     for current_position in current_positions:
@@ -59,7 +61,8 @@ def search_exit(directions, network):
         steps.append(local_steps)
 
     # while not all(
-    #     current_position.endswith("Z") for current_position in current_positions
+    #     current_position.endswith("Z")
+    #     for current_position in current_positions
     # ):
     #     print("current positions", current_positions)
 

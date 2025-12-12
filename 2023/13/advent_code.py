@@ -4,8 +4,10 @@
 
 import os
 
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "input.txt"
+)
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 
@@ -40,9 +42,13 @@ def check_horizontal_symmetry(pattern):
             sum(
                 sum(
                     0 if char_top == char_bottom else 1
-                    for char_top, char_bottom in zip(row_top, row_bottom)
+                    for char_top, char_bottom in zip(
+                        row_top, row_bottom, strict=False
+                    )
                 )
-                for row_top, row_bottom in zip(top_flipped, bottom)
+                for row_top, row_bottom in zip(
+                    top_flipped, bottom, strict=False
+                )
             )
             == 1
         ):
@@ -50,7 +56,7 @@ def check_horizontal_symmetry(pattern):
 
 
 def transpose(pattern):
-    return ["".join(line) for line in zip(*pattern)]
+    return ["".join(line) for line in zip(*pattern, strict=False)]
 
 
 def get_symmetries(patterns):
@@ -58,7 +64,9 @@ def get_symmetries(patterns):
     vertical_symmetries = []
     for pattern in patterns:
         horizontal_symmetries.append(check_horizontal_symmetry(pattern))
-        vertical_symmetries.append(check_horizontal_symmetry(transpose(pattern)))
+        vertical_symmetries.append(
+            check_horizontal_symmetry(transpose(pattern))
+        )
     return horizontal_symmetries, vertical_symmetries
 
 

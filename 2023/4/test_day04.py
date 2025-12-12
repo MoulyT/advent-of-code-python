@@ -1,8 +1,7 @@
-from advent_code import (
-    parse_input,
+from .advent_code import (
     get_how_many_winning_numbers,
     get_points,
-    calculate_points,
+    parse_input,
 )
 
 EXAMPLE_INPUT = """Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53

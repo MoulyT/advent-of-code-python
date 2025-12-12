@@ -2,15 +2,15 @@
 # Author = Mouly Taha
 # Date = December 2018
 
-import os
 import math
+import os
 
 # Obtener la ruta al directorio actual
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 # Construir la ruta al archivo input.txt en el mismo directorio
 file_path = os.path.join(dir_path, "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 
@@ -44,9 +44,9 @@ def calculate_entropy(hand):
     joker_hand = hand.replace("J", most_common_card)
     print("joker_hand", joker_hand)
     entropy = -sum(
-        map(
-            lambda prob: prob * math.log(prob),
-            (joker_hand.count(card) / len(joker_hand) for card in set(joker_hand)),
+        prob * math.log(prob)
+        for prob in (
+            joker_hand.count(card) / len(joker_hand) for card in set(joker_hand)
         )
     )
     print("has entropy", entropy)

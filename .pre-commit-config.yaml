@@ -1,0 +1,16 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.9
+    hooks:
+      # Ejecuta el linter de ruff
+      - id: ruff
+        args: [--fix]
+      # Ejecuta el formatter de ruff
+      - id: ruff-format
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.407
+    hooks:
+      # Ejecuta pyright para verificar tipos
+      - id: pyright
+        additional_dependencies: [pytest>=9.0.2]

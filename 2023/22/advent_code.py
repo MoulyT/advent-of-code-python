@@ -4,11 +4,13 @@
 
 import os
 
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'input.txt')
-with open(file_path, 'r', encoding='utf-8') as input_file:
+file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "input.txt"
+)
+with open(file_path, encoding="utf-8") as input_file:
     input = input_file.read()
 
 
-print('Part One :', str(None))
+print("Part One :", str(None))
 
-print('Part Two :', str(None))
+print("Part Two :", str(None))

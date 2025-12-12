@@ -1,9 +1,10 @@
 import pytest
-from advent_code import (
+
+from .advent_code import (
     calculate_sum_ids,
     how_many_colors,
-    parse_game_data,
     is_game_possible,
+    parse_game_data,
 )
 
 
@@ -17,9 +18,9 @@ from advent_code import (
     ],
 )
 def test_how_many_colors(test_input, expected):
-    assert (
-        how_many_colors(test_input) == expected
-    ), f"Input: {test_input}, Expected: {expected}, Got: {how_many_colors(test_input)}"
+    assert how_many_colors(test_input) == expected, (
+        f"Input: {test_input}, Expected: {expected}, Got: {how_many_colors(test_input)}"
+    )
 
 
 EXAMPLE_INPUT = """Game 1: 7 red, 14 blue; 2 blue, 3 red, 3 green; 4 green, 12 blue, 15 red; 3 green, 12 blue, 3 red; 11 red, 2 green
@@ -191,7 +192,9 @@ def test_is_game_possible():
     assert result is False, f"Expected False, but got {result}"
 
     result = is_game_possible(GAMES[10])
-    assert result is False, f"Expected False, but got {result}"
+    assert result is True, (
+        f"Expected True, but got {result}"
+    )  # Game 11 is valid
 
     result = is_game_possible(GAMES[11])
     assert result is True, f"Expected True, but got {result}"
@@ -208,4 +211,4 @@ def test_is_game_possible():
 
 def test_calculate_sum_ids():
     result = calculate_sum_ids(GAMES)
-    assert result == 54, f"Expected 54, but got {result}"
+    assert result == 65, f"Expected 65, but got {result}"  # 4+5+6+11+12+13+14

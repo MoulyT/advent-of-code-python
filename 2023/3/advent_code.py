@@ -4,8 +4,8 @@
 
 import os
 import re
-from typing import List, Dict, Literal, Union
 from math import prod
+from typing import Literal
 
 # Obtener la ruta al directorio actual
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -13,16 +13,16 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 # Construir la ruta al archivo input.txt en el mismo directorio
 file_path = os.path.join(dir_path, "input.txt")
 
-with open(file_path, "r", encoding="utf-8") as input_file:
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 
 def get_map(input_string: str):
     """
-    Esta función toma una cadena de texto con múltiples líneas (input_string) y la divide en líneas individuales.
+    Splits a multiline string into individual lines.
 
     Returns:
-        tuple[str, ...]: Una tupla donde cada elemento es una string que representa una fila del mapa.
+        tuple[str, ...]: Tuple of strings representing map rows.
 
     """
     return tuple(input_string.splitlines())
@@ -32,27 +32,24 @@ input_map = get_map(input_data)
 
 
 def find_number(
-    map_of_rows: tuple[str, ...]
-) -> List[Dict[Literal["number", "row", "column"], int]]:
+    map_of_rows: tuple[str, ...],
+) -> list[dict[Literal["number", "row", "column"], int]]:
     """
-    Encuentra todos los números dentro de un mapa representado como una tupla de strings y devuelve sus coordenadas.
-
-    Esta función busca en cada fila del mapa y encuentra todos los números (secuencias de dígitos).
-    Devuelve una lista de diccionarios, donde cada diccionario contiene un número encontrado y sus coordenadas (fila y columna).
+    Finds all numbers in a map and returns their coordinates.
 
     Args:
-        map_of_rows (tuple[str, ...]): Una tupla de strings, donde cada string representa una fila del mapa.
+        map_of_rows: Tuple of strings representing map rows.
 
     Returns:
-        List[Dict[Literal["number", "row", "column"], int]]: Una lista de diccionarios. Cada diccionario contiene las claves:
-            - "number": El número encontrado (int).
-            - "row": El índice de la fila en la que se encontró el número (int).
-            - "column": El índice de la columna en la que inicia el número encontrado en la fila (int).
+        List of dicts with keys:
+            - "number": Found number (int)
+            - "row": Row index (int)
+            - "column": Starting column index (int)
     """
-    REG_EXP_NUMBER = r"\d+"
+    reg_exp_number = r"\d+"
     numbers_coordinates = []
     for row_index, row in enumerate(map_of_rows):
-        numbers_in_row = re.finditer(REG_EXP_NUMBER, row)
+        numbers_in_row = re.finditer(reg_exp_number, row)
         for match in numbers_in_row:
             numbers_coordinates.append(
                 {
@@ -65,20 +62,18 @@ def find_number(
 
 
 def is_part_number(
-    number_coordinates: Dict[Literal["number", "row", "column"], int],
+    number_coordinates: dict[Literal["number", "row", "column"], int],
     map_of_rows: tuple[str, ...],
 ):
     """
-    La función busca alrededor de las coordenadas dadas de un número para ver si hay caracteres que no son dígitos ni puntos (.).
+    Checks if a number has adjacent non-digit, non-period chars.
 
     Args:
-        number_coordinates (Dict[Literal["number", "row", "column"], int]): Un diccionario que contiene el número,
-            la fila (row) y la columna (column) donde comienza el número en el mapa.
-        map_of_rows (tuple[str, ...]): Una tupla de strings, donde cada string representa una fila del mapa.
+        number_coordinates: Dict with number, row, and column.
+        map_of_rows: Tuple of strings representing map rows.
 
     Returns:
-        bool: True si se encuentra al menos un carácter que no es un dígito ni un punto alrededor del número especificado,
-            False en caso contrario.
+        bool: True if symbol found adjacent to number.
     """
     row = number_coordinates["row"]
     column = number_coordinates["column"]
@@ -96,11 +91,11 @@ def is_part_number(
     #     + str(number)
     # )
 
-    # Comprobar si el número proporcionado está efectivamente en las coordenadas dadas
+    # Verify the number is at the given coordinates
     if found_fragment != str(number):
         raise ValueError(
-            f"Se esperaba el número {number} en la fila {row}, columna {column}, "
-            f"pero se encontró '{found_fragment}'."
+            f"Expected {number} at row {row}, column {column}, "
+            f"found '{found_fragment}'."
         )
 
     targets_coordinates = get_adyacent_coordinates(
@@ -123,15 +118,11 @@ def is_part_number(
     # )
     # print("In that row we have: " + map_of_rows[row])
     # print("Targets coordinates: " + str(targets_coordinates))
-    REG_EXP_ANYTHING_BUT_NUMBER_OR_PERIOD = r"[^0-9.]"
+    reg_exp_anything_but_number_or_period = r"[^0-9.]"
     for target_coordinates in targets_coordinates:
         target_row, target_column = target_coordinates
         target = map_of_rows[target_row][target_column]
-        # print(
-        #     f"Target: {target} at row {target_row} and column {target_column} is part of number {number_coordinates['number']} at row {row} and column {column}?",
-        #     re.search(REG_EXP_ANYTHING_BUT_NUMBER_OR_PERIOD, target),
-        # )
-        if re.search(REG_EXP_ANYTHING_BUT_NUMBER_OR_PERIOD, target):
+        if re.search(reg_exp_anything_but_number_or_period, target):
             return True
     return False
 
@@ -145,31 +136,28 @@ def get_adyacent_coordinates(row, column, length, rows_of_map, columns_of_map):
                 and target_column >= 0
                 and target_row < rows_of_map
                 and target_column < columns_of_map
+                and not (
+                    target_row == row
+                    and column <= target_column < column + length
+                )
             ):
-                if not (
-                    target_row == row and column <= target_column < column + length
-                ):
-                    target_coordinates.append([target_row, target_column])
+                target_coordinates.append([target_row, target_column])
     return target_coordinates
 
 
 def sum_part_numbers(
-    number_coordinates: List[Dict[Literal["number", "row", "column"], int]],
+    number_coordinates: list[dict[Literal["number", "row", "column"], int]],
     map_of_rows: tuple[str, ...],
 ):
     """
-    Suma los números que son parte de la solución.
+    Sums numbers that are part numbers.
 
     Args:
-        number_coordinates (List[Dict[Literal["number", "row", "column"], int]]): Una lista de diccionarios.
-            Cada diccionario contiene las claves:
-                - "number": El número encontrado (int).
-                - "row": El índice de la fila en la que se encontró el número (int).
-                - "column": El índice de la columna en la que inicia el número encontrado en la fila (int).
-        map_of_rows (tuple[str, ...]): Una tupla de strings, donde cada string representa una fila del mapa.
+        number_coordinates: List of dicts with number coordinates.
+        map_of_rows: Tuple of strings representing map rows.
 
     Returns:
-        int: La suma de los números que son parte de la solución.
+        int: Sum of part numbers.
     """
     result = 0
     part_numbers = []
@@ -201,27 +189,24 @@ print("Part One : " + str(solution_part_one))
 
 
 def find_asterisk(
-    map_of_rows: tuple[str, ...]
-) -> List[Dict[Literal["symbol", "row", "column"], Union[int, str]]]:
+    map_of_rows: tuple[str, ...],
+) -> list[dict[Literal["symbol", "row", "column"], int | str]]:
     """
-    Encuentra todos los asteriscos dentro de un mapa representado como una tupla de strings y devuelve sus coordenadas.
-
-    Esta función busca en cada fila del mapa y encuentra todos los asteriscos (secuencias de dígitos).
-    Devuelve una lista de diccionarios, donde cada diccionario contiene un número encontrado y sus coordenadas (fila y columna).
+    Finds all asterisks in a map and returns their coordinates.
 
     Args:
-        map_of_rows (tuple[str, ...]): Una tupla de strings, donde cada string representa una fila del mapa.
+        map_of_rows: Tuple of strings representing map rows.
 
     Returns:
-        List[Dict[Literal["symbol", "row", "column"], int]]: Una lista de diccionarios. Cada diccionario contiene las claves:
-            - "symbol": El número encontrado (int).
-            - "row": El índice de la fila en la que se encontró el número (int).
-            - "column": El índice de la columna en la que inicia el número encontrado en la fila (int).
+        List of dicts with keys:
+            - "symbol": The asterisk symbol (str)
+            - "row": Row index (int)
+            - "column": Column index (int)
     """
-    REG_EXP_ASTERISC = r"\*"
+    reg_exp_asterisk = r"\*"
     asterisk_coordinates = []
     for row_index, row in enumerate(map_of_rows):
-        numbers_in_row = re.finditer(REG_EXP_ASTERISC, row)
+        numbers_in_row = re.finditer(reg_exp_asterisk, row)
         for match in numbers_in_row:
             asterisk_coordinates.append(
                 {
@@ -234,18 +219,18 @@ def find_asterisk(
 
 
 def is_gear(
-    asterisk_coordinates: Dict[Literal["symbol", "row", "column"], Union[int, str]],
+    asterisk_coordinates: dict[Literal["symbol", "row", "column"], int | str],
     map_of_rows: tuple[str, ...],
 ):
-    row = asterisk_coordinates["row"]
-    column = asterisk_coordinates["column"]
+    row: int = asterisk_coordinates["row"]  # type: ignore
+    column: int = asterisk_coordinates["column"]  # type: ignore
 
     # Check if the asterisk is in the coordinates given
     found_fragment = map_of_rows[row][column]
     if found_fragment != str(asterisk_coordinates["symbol"]):
         raise ValueError(
-            f"Se esperaba el símbolo * en la fila {row}, columna {column}, "
-            f"pero se encontró '{found_fragment}'."
+            f"Expected * at row {row}, column {column}, "
+            f"found '{found_fragment}'."
         )
 
     adjacent_numbers = set()

@@ -6,8 +6,10 @@ import os
 import time
 from functools import cache
 
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "input.txt"
+)
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 EXAMPLE_INPUT = """???.### 1,1,3
@@ -42,7 +44,7 @@ def is_possible_springs(springs: str, instructions: tuple[int, ...]):
     result = True
     if len(damaged_springs) != len(instructions):
         return False
-    for spring, instruction in zip(damaged_springs, instructions):
+    for spring, instruction in zip(damaged_springs, instructions, strict=False):
         if len(spring) != instruction:
             result = False
             break
@@ -58,11 +60,13 @@ def how_many_possible_springs(
     current_block_length=0,
 ):
     if index == len(spring):
-        if block_index == len(instructions) and current_block_length == 0:
-            return 1
-        elif (
-            block_index == len(instructions) - 1
-            and instructions[block_index] == current_block_length
+        if (
+            block_index == len(instructions)
+            and current_block_length == 0
+            or (
+                block_index == len(instructions) - 1
+                and instructions[block_index] == current_block_length
+            )
         ):
             return 1
         else:
@@ -85,13 +89,19 @@ def how_many_possible_springs(
 
     if spring[index] == "#" or spring[index] == "?":
         ans += how_many_possible_springs(
-            spring, instructions, index + 1, block_index, current_block_length + 1
+            spring,
+            instructions,
+            index + 1,
+            block_index,
+            current_block_length + 1,
         )
 
     return ans
 
 
-def sum_of_all_possible_springs(input_parsed: list[tuple[str, tuple[int, ...]]]):
+def sum_of_all_possible_springs(
+    input_parsed: list[tuple[str, tuple[int, ...]]],
+):
     result = 0
     for springs, instructions in input_parsed:
         result += how_many_possible_springs(springs, instructions)

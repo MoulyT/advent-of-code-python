@@ -8,8 +8,10 @@ import sys
 # Aumenta el límite de recursión
 sys.setrecursionlimit(20000)
 
-file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "input.txt")
-with open(file_path, "r", encoding="utf-8") as input_file:
+file_path = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "input.txt"
+)
+with open(file_path, encoding="utf-8") as input_file:
     input_data = input_file.read()
 
 EXAMPLE_INPUT = """............
@@ -61,11 +63,7 @@ def get_directions(last_move: list[int], next_pipe: str):
             f"next pipe is '{next_pipe}'. No valid move found."
         )
         raise ValueError(error_message)
-    direction_name = direction_names.get(tuple(new_direction), "Unknown")
-
-    # print(
-    #     f"Last move was {last_move_str} and  next pipe is '{next_pipe}', so going {direction_name}"
-    # )
+    direction_names.get(tuple(new_direction), "Unknown")
 
     return new_direction
 
@@ -77,7 +75,7 @@ def search_initial_position(grid: list[list[str]]):
                 return [i, j]
 
 
-def calculate_area_Gauss_formula(vertexes: list[list[int]]):
+def calculate_area_gauss_formula(vertexes: list[list[int]]):
     n = len(vertexes)
     area = 0
     for i in range(n - 1):
@@ -90,21 +88,28 @@ def calculate_area_Gauss_formula(vertexes: list[list[int]]):
     return abs(area / 2)
 
 
-def calculate_inner_points_Pick_formula(area: int, boundary_points: int):
+def calculate_inner_points_pick_formula(area: float, boundary_points: int):
     return area - (boundary_points / 2) + 1
 
 
 def search(
-    grid: list[list[str]], last_move=None, current_position=None, steps=0, vertexes=None
+    grid: list[list[str]],
+    last_move=None,
+    current_position=None,
+    steps=0,
+    vertexes=None,
 ):
     if vertexes is None:
         vertexes = []
     if current_position is None and last_move is None:
         current_position = search_initial_position(grid)
+        assert current_position is not None
         last_move = DOWN
         new_i = current_position[0] + last_move[0]
         new_j = current_position[1] + last_move[1]
         return search(grid, last_move, [new_i, new_j], steps + 1)
+    assert current_position is not None
+    assert last_move is not None
     i, j = current_position
     direction = get_directions(last_move, grid[i][j])
     if is_vertex(grid[i][j]):
@@ -113,7 +118,11 @@ def search(
     if direction is None:
         return steps, vertexes
     return search(
-        grid, direction, [i + direction[0], j + direction[1]], steps + 1, vertexes
+        grid,
+        direction,
+        [i + direction[0], j + direction[1]],
+        steps + 1,
+        vertexes,
     )
 
 
@@ -130,9 +139,9 @@ print(search(matrix))
 steps_walked, list_vertexes = search(matrix)
 print("Steps walked :", steps_walked)
 print("Vertexes :", list_vertexes)
-area = calculate_area_Gauss_formula(list_vertexes)
+area = calculate_area_gauss_formula(list_vertexes)
 print("Area :", area)
-inner_points = calculate_inner_points_Pick_formula(area, steps_walked)
+inner_points = calculate_inner_points_pick_formula(area, steps_walked)
 print("Inner points :", inner_points)
 
 print("Part One :", str(None))
