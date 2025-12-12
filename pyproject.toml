@@ -8,6 +8,7 @@ dependencies = []
 
 [dependency-groups]
 dev = [
+    "debugpy>=1.8.18",
     "pre-commit>=4.5.0",
     "pyright>=1.1.407",
     "pytest>=9.0.2",

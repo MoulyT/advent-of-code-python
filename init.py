@@ -24,10 +24,7 @@ except ImportError:
 # Folders will be created here
 base_pos = "./"
 # Get your session cookie from adventofcode.com
-USER_SESSION_ID = (
-    "53616c7465645f5f21ab4671cf9be2fd7e4e3d1ca0a38474b3cbcdeb4d9ebc434638c6b7"
-    "14404be71bfab6ed539aad02cd2eb26563fd6ae0e15c22872bd3fb6a"
-)
+USER_SESSION_ID = "53616c7465645f5fe5e373b8d59d6bf234c1338ff34991234b90da925762340c9ce6700db511427a8af6d6ba20a245f9e4115d41ce155e16af213d4e74fd2292"  # noqa: E501
 # Set to false to not download statements (only part 1 available)
 DOWNLOAD_STATEMENTS = True
 # Set to false to not download inputs
@@ -43,13 +40,13 @@ OVERWRITE = False
 
 # DATE SPECIFIC PARAMETERS
 # Date automatically put in the code templates
-date = "December 2018"
+date = "December 2025"
 # You can go as early as 2015
-starting_advent_of_code_year = 2023
+starting_advent_of_code_year = 2025
 # Download all data up until this year
-last_advent_of_code_year = 2023
+last_advent_of_code_year = 2025
 # For unfinished years, download days up until this day
-last_advent_of_code_day = 25
+last_advent_of_code_day = 12
 
 # Code
 MAX_RECONNECT_ATTEMPT = 2
@@ -88,16 +85,13 @@ for y in years:
                     f"# Advent of code Year {y} Day {d} solution\n"
                     f"# Author = {author}\n"
                     f"# Date = {date}\n\n"
-                    "import os\n\n"
-                    "file_path = os.path.join(\n"
-                    "    os.path.dirname(os.path.abspath(__file__)),\n"
-                    "    'input.txt'\n"
-                    ")\n"
-                    "with open(file_path, 'r', encoding='utf-8') "
+                    "from pathlib import Path\n\n"
+                    'input_file_path = Path(__file__).parent / "input.txt"\n'
+                    'with open(input_file_path, encoding="utf-8") '
                     "as input_file:\n"
-                    "    input = input_file.read()\n\n\n"
-                    "print('Part One :', str(None))\n\n"
-                    "print('Part Two :', str(None))"
+                    "    input_data = input_file.read()\n\n\n"
+                    'print("Part One :", str(None))\n\n'
+                    'print("Part Two :", str(None))\n'
                 )
                 code.write(code_content)
         if (
