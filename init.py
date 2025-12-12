@@ -75,11 +75,24 @@ for y in years:
         if not os.path.exists(year_pos + "/" + str(d)):
             os.mkdir(year_pos + "/" + str(d))
         day_pos = year_pos + "/" + str(d)
+
+        # Create __init__.py to make directory a Python package
+        if not os.path.exists(day_pos + "/__init__.py"):
+            with open(
+                day_pos + "/__init__.py", "w", encoding="utf-8"
+            ) as init_file:
+                init_file.write(
+                    "# This file makes this directory a Python package\n"
+                )
+
+        # Create solution file
+        day_padded = str(d).zfill(2)
+        solution_file = f"day{day_padded}.py"
         if MAKE_CODE_TEMPLATE and not os.path.exists(
-            day_pos + "/advent_code.py"
+            day_pos + "/" + solution_file
         ):
             with open(
-                day_pos + "/advent_code.py", "w+", encoding="utf-8"
+                day_pos + "/" + solution_file, "w+", encoding="utf-8"
             ) as code:
                 code_content = (
                     f"# Advent of code Year {y} Day {d} solution\n"
@@ -94,6 +107,24 @@ for y in years:
                     'print("Part Two :", str(None))\n'
                 )
                 code.write(code_content)
+
+        # Create test file
+        test_file = f"test_day{day_padded}.py"
+        if MAKE_CODE_TEMPLATE and not os.path.exists(day_pos + "/" + test_file):
+            with open(
+                day_pos + "/" + test_file, "w+", encoding="utf-8"
+            ) as test:
+                test_content = (
+                    'EXAMPLE_INPUT = """"""\n\n\n'
+                    "def test_part_one():\n"
+                    '    """Test part one with example input."""\n'
+                    "    assert True\n\n\n"
+                    "def test_part_two():\n"
+                    '    """Test part two with example input."""\n'
+                    "    assert True\n"
+                )
+                test.write(test_content)
+
         if (
             DOWNLOAD_INPUTS
             and (not os.path.exists(day_pos + "/input.txt") or OVERWRITE)

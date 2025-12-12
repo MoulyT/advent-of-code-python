@@ -1,4 +1,4 @@
-from .advent_code import (
+from .day04 import (
     get_how_many_winning_numbers,
     get_points,
     parse_input,

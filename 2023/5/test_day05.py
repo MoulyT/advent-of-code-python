@@ -1,4 +1,4 @@
-from .advent_code import EXAMPLE_INPUT, parse_input
+from .day05 import EXAMPLE_INPUT, parse_input
 
 
 def test_parse_input_and_mapping_functions():

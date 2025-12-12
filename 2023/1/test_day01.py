@@ -1,4 +1,4 @@
-from .advent_code import (
+from .day01 import (
     get_first_integer,
     get_last_integer,
     search_first_integer,

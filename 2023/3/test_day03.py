@@ -1,4 +1,4 @@
-from .advent_code import (
+from .day03 import (
     find_number,
     get_adyacent_coordinates,
     get_map,

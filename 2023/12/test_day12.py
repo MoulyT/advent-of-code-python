@@ -1,4 +1,4 @@
-from .advent_code import (
+from .day12 import (
     EXAMPLE_INPUT,
     how_many_possible_springs,
     is_possible_springs,

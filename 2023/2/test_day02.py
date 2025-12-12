@@ -1,6 +1,6 @@
 import pytest
 
-from .advent_code import (
+from .day02 import (
     calculate_sum_ids,
     how_many_colors,
     is_game_possible,
