@@ -45,6 +45,8 @@ include = ["2023", "2024", "2025"]
 pythonVersion = "3.14"
 typeCheckingMode = "standard"
 reportMissingTypeStubs = false
+venvPath = "."
+venv = ".venv"
 
 [tool.pytest.ini_options]
 testpaths = ["2023", "2024", "2025"]
